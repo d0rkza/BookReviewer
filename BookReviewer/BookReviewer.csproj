@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.14" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
+	<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.28.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Business\AuthorGenres\Commands\" />
+    <Folder Include="Business\AuthorGenres\Queries\" />
+    <Folder Include="Business\BookAuthors\Commands\" />
+    <Folder Include="Business\BookAuthors\Queries\" />
+    <Folder Include="Business\BookGenres\Commands\" />
+    <Folder Include="Business\BookGenres\Queries\" />
+    <Folder Include="Business\BookReviews\Commands\" />
+    <Folder Include="Business\BookReviews\Queries\" />
+    <Folder Include="Business\Genre\Commands\" />
+    <Folder Include="Business\Genre\Queries\" />
+  </ItemGroup>
+
+</Project>
