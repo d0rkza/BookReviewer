@@ -1,26 +1,28 @@
-﻿using BookReviewer.Models;
+﻿using BookReviewer.Entities;
+using BookReviewer.Localize;
 using BookReviewer.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace BookReviewer.Business.Books.Queries.GetBooksQuery
 {
     public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, List<GetBooksQueryDTO>>
     {
         private readonly BookReviewerDbContext context;
+        private readonly IStringLocalizer<Resource> localizer;
 
-        public GetBooksQueryHandler(BookReviewerDbContext context)
+        public GetBooksQueryHandler(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         public async Task<List<GetBooksQueryDTO>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
         {
+            // Retrieve a localized string for a specific key and culture
             var query = context.Book.AsQueryable();
 
             //If we request

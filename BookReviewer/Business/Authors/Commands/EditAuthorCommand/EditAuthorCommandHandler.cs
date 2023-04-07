@@ -3,17 +3,20 @@ using BookReviewer.Models;
 using BookReviewer.Models.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using BookReviewer.Models;
+using BookReviewer.Localize;
+using Microsoft.Extensions.Localization;
 
 namespace BookReviewer.Business.Authors.Commands.EditAuthorCommand
 {
     public class EditAuthorCommandHandler : IRequestHandler<EditAuthorCommand, RecordIDResponse>
     {
         private readonly BookReviewerDbContext context;
+        private readonly IStringLocalizer<Resource> localizer;
 
-        public EditAuthorCommandHandler(BookReviewerDbContext context)
+        public EditAuthorCommandHandler(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         public async Task<RecordIDResponse> Handle(EditAuthorCommand request, CancellationToken cancellationToken)
@@ -30,7 +33,7 @@ namespace BookReviewer.Business.Authors.Commands.EditAuthorCommand
             //Check if book exists
             if (author == null)
             {
-                throw new BaseException("The requested author does not exist. Check Id.");
+                throw new BaseException(localizer["NEW_BOOK_AUTHOR_NOT_FOUND"]);
             }
 
             author.Name = parameters.AuthorName == null ? author.Name : parameters.AuthorName;

@@ -1,23 +1,27 @@
-﻿using BookReviewer.Models;
+﻿using BookReviewer.Localize;
+using BookReviewer.Models;
 using BookReviewer.Models.Exceptions;
 using MediatR;
+using Microsoft.Extensions.Localization;
 
 namespace BookReviewer.Business.Books.Queries.GetBookDetailsQuery
 {
     public class GetBookDetailsQueryHandler : IRequestHandler<GetBookDetailsQuery, GetBookDetailsQueryDTO>
     {
         private readonly BookReviewerDbContext context;
+        private readonly IStringLocalizer<Resource> localizer;
 
-        public GetBookDetailsQueryHandler(BookReviewerDbContext context)
+        public GetBookDetailsQueryHandler(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         public async Task<GetBookDetailsQueryDTO> Handle(GetBookDetailsQuery request, CancellationToken cancellationToken)
         {
             if (request.BookId == null) 
             {
-                throw new BaseException("Please provide book id");
+                throw new BaseException(localizer["GET_BOOK_DETAILS_NO_ID"]);
             }
 
             var result = context.Book
@@ -41,7 +45,7 @@ namespace BookReviewer.Business.Books.Queries.GetBookDetailsQuery
 
             if (result == null)
             {
-                throw new BaseException("Book details were not found.");
+                throw new BaseException(localizer["GET_BOOK_DETAILS_BOOK_DETAILS_NOT_FOUND"]);
             }
 
             return result;

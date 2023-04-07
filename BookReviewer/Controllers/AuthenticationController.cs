@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BookReviewer.Models;
 using BookReviewer.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using BookReviewer.Entities;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Localization;
 
 namespace BookReviewer.Controllers
 {

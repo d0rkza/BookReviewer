@@ -12,23 +12,24 @@ using Microsoft.EntityFrameworkCore;
 using BookReviewer.Business.BookReviewerService;
 using BookReviewer.IBusiness;
 using BookReviewer.Models;
+using BookReviewer.Localize;
+using Microsoft.Extensions.Localization;
 
 namespace BookReviewer.Business.Authors.Commands.DeleteAuthorCommand
 {
     public class DeleteAuthorCommandHandler : IRequestHandler<DeleteAuthorCommand, RecordIDResponse>
     {
         private readonly BookReviewerDbContext context;
-        private readonly IBookReviewerService service;
+        private readonly IStringLocalizer<Resource> localizer;
 
-        public DeleteAuthorCommandHandler(BookReviewerDbContext context, IBookReviewerService service)
+        public DeleteAuthorCommandHandler(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
-            this.service = service;
+            this.localizer = localizer;
         }
 
         public async Task<RecordIDResponse> Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
         {
-            this.service.CheckUserPermissions(request.ESign.Username);
             return await this.DeleteAuthor(request.Data, cancellationToken);
         }
 
@@ -40,7 +41,7 @@ namespace BookReviewer.Business.Authors.Commands.DeleteAuthorCommand
 
             if (book == null)
             {
-                throw new BaseException("Requested author cannot be found!");
+                throw new BaseException(localizer["DELETE_AUTHOR_AUTHOR_NOT_FOUND"]);
             }
 
             this.context.Remove(book);

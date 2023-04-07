@@ -1,17 +1,20 @@
-﻿using BookReviewer.Models;
+﻿using BookReviewer.Localize;
 using BookReviewer.Models;
 using BookReviewer.Models.Responses;
 using MediatR;
+using Microsoft.Extensions.Localization;
 
 namespace BookReviewer.Business.Authors.Commands.NewAuthorCommand
 {
     public class NewAuthorCommandHandler : IRequestHandler<NewAuthorCommand, RecordIDResponse>
     {
         private readonly BookReviewerDbContext context;
+        private readonly IStringLocalizer<Resource> localizer;
 
-        public NewAuthorCommandHandler(BookReviewerDbContext context)
+        public NewAuthorCommandHandler(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         public async Task<RecordIDResponse> Handle(NewAuthorCommand request, CancellationToken cancellationToken)
