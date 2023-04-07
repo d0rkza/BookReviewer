@@ -1,16 +1,7 @@
-﻿using BookReviewer.Business.Books.Commands.NewBookCommand;
-using BookReviewer.Models.Exceptions;
-using BookReviewer.Models;
+﻿using BookReviewer.Models;
 using BookReviewer.Models.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookReviewer.Business.BookReviewerService;
 using BookReviewer.IBusiness;
-using BookReviewer.Models;
 
 namespace BookReviewer.Business.Users.Commands.RegisterUserCommand
 {

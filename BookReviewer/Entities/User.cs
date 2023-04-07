@@ -13,6 +13,7 @@ namespace BookReviewer.Entities
         [JsonIgnore]
         public string Password { get; set; }
     }
+    //TODO: Implement user to be stored in database
     //public class User
     //{
     //    public int Id { get; set; }

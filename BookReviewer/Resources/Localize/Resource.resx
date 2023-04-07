@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NEW_BOOK_AUTHOR_NOT_FOUND" xml:space="preserve">
-    <value>Dej mi že neki</value>
+    <value>test</value>
   </data>
 </root>

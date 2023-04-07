@@ -1,11 +1,8 @@
-﻿using BookReviewer.Entities;
-using BookReviewer.Localize;
+﻿using BookReviewer.Localize;
 using BookReviewer.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System.Diagnostics;
-using System.Globalization;
 
 namespace BookReviewer.Business.Books.Queries.GetBooksQuery
 {

@@ -7,6 +7,7 @@ namespace BookReviewer.IBusiness
 {
     public interface ICustomAuthenticationService
     {
+        //TODO: Implement authentication with real users
         //void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
 
         //bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);

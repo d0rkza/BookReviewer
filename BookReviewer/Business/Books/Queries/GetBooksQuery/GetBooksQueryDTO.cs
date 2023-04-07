@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BookReviewer.Business.Books.Queries.GetBooksQuery
+﻿namespace BookReviewer.Business.Books.Queries.GetBooksQuery
 {
     public class GetBooksQueryDTO
     {

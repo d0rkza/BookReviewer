@@ -1,13 +1,7 @@
 ﻿using BookReviewer.Models;
 using BookReviewer.Models.Request;
 using BookReviewer.Models.Responses;
-using MediatR;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookReviewer.Business.Books.Commands.NewBookCommand
 {

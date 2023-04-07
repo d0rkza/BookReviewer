@@ -34,6 +34,8 @@ namespace BookReviewer.Api.Controllers
         {
             return await this.SendRequest(getAuthorDetailsQuery);
         }
+        
+        //TODO: Implement author commands
 
         ///// <summary>
         ///// Inserts new author to DB and connects entry with author and genre tables.

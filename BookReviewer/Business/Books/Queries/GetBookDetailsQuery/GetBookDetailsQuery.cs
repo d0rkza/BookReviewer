@@ -1,5 +1,4 @@
-﻿using BookReviewer.Business.Books.Queries.GetBooksQuery;
-using MediatR;
+﻿using MediatR;
 
 namespace BookReviewer.Business.Books.Queries.GetBookDetailsQuery
 {

@@ -1,5 +1,4 @@
-﻿using BookReviewer.IBusiness;
-using BookReviewer.Localize;
+﻿using BookReviewer.Localize;
 using BookReviewer.Models;
 using BookReviewer.Models.Exceptions;
 using BookReviewer.Models.Request;

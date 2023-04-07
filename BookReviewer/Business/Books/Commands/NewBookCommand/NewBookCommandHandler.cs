@@ -5,7 +5,6 @@ using BookReviewer.Models.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System.Diagnostics;
 
 namespace BookReviewer.Business.Books.Commands.NewBookCommand
 {
