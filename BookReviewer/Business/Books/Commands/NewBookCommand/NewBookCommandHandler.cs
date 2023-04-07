@@ -1,26 +1,23 @@
-﻿using BookReviewer.Models;
+﻿using BookReviewer.Localize;
 using BookReviewer.Models;
 using BookReviewer.Models.Exceptions;
 using BookReviewer.Models.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
+using System.Diagnostics;
 
 namespace BookReviewer.Business.Books.Commands.NewBookCommand
 {
     public class NewBookCommandHandler : IRequestHandler<NewBookCommand, RecordIDResponse>
     {
         private readonly BookReviewerDbContext context;
+        private readonly IStringLocalizer<Resource> localizer;
 
-        public NewBookCommandHandler(BookReviewerDbContext context)
+        public NewBookCommandHandler(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         public async Task<RecordIDResponse> Handle(NewBookCommand request, CancellationToken cancellationToken)
@@ -53,7 +50,7 @@ namespace BookReviewer.Business.Books.Commands.NewBookCommand
                     {
                         if (!authors.Any(x => x.Id == authorId))
                         {
-                            throw new BaseException("The requested author does not exists in the database.");
+                            throw new BaseException(localizer["NEW_BOOK_AUTHOR_NOT_FOUND"]);
                         }
                         var bookAuthor = new BookAuthor()
                         {
@@ -104,7 +101,7 @@ namespace BookReviewer.Business.Books.Commands.NewBookCommand
                     {
                         if (!genres.Any(x => x.Id == genreId))
                         {
-                            throw new BaseException("The requested author does not exists in the database.");
+                            throw new BaseException(localizer["NEW_BOOK_GENRE_NOT_FOUND"]);
                         }
                         var bookGenre = new BookGenre()
                         {

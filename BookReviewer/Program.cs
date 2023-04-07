@@ -1,20 +1,24 @@
 using BookReviewer.Api.Controllers;
 using BookReviewer.Business;
 using BookReviewer.Business.BookReviewerService;
-using BookReviewer.Business.Books.Queries.GetBooksQuery;
+using BookReviewer.Extensions;
 using BookReviewer.IBusiness;
 using BookReviewer.Models;
 using BookReviewer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -46,6 +50,40 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+//Add localization support
+builder.Services.AddMvc()
+        .AddViewLocalization(
+            LanguageViewLocationExpanderFormat.Suffix,
+            opts => { opts.ResourcesPath = "Resources"; })
+        .AddDataAnnotationsLocalization();
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "");
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new List<CultureInfo>
+    { 
+        new CultureInfo("en-us"),
+        new CultureInfo("sl-si")
+    };
+
+    options.DefaultRequestCulture = new RequestCulture("en-us");
+    options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-us") };
+    options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-us") };
+    options.RequestCultureProviders = new[] { new RouteDataRequestCultureProvider { } };
+});
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.ConstraintMap.Add("culture", typeof(LanguageRouteConstraint));
+});
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<string[]>(new[] { "en-us", "sl-si" });
+
+builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
+builder.Services.AddSingleton(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
 
 var allowedOrigins = "DevCORS";
 builder.Services.AddCors(options =>
@@ -79,7 +117,6 @@ builder.Services.AddTransient<ICustomAuthenticationService, CustomAuthentication
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetBooksQueryHandler).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
-
 //Add authentication schema and JWT settings
 builder.Services
     .AddAuthentication(options =>
@@ -107,33 +144,19 @@ builder.Services
 //register custom services
 builder.Services.AddTransient<IUserService, UserService>();
 
-
-
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-
-////Add swagger with oAuth2 token
-//builder.Services.AddSwaggerGen(options =>
-//{
-//    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-//    {
-//        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
-//        In = ParameterLocation.Header,
-//        Name = "Authorization",
-//        Type = SecuritySchemeType.ApiKey
-//    });
-
-//    options.OperationFilter<SecurityRequirementsOperationFilter>();
-//});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseRouting();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+var localizeOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+app.UseRequestLocalization(localizeOptions.Value);
 
 //Intercept token - debug purposes
 app.Use(async (context, next) =>
@@ -151,6 +174,15 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{culture}/{controller}/{action}/{id?}",
+        defaults: new { culture = "en-us" }
+    );
+});
 
 app.MapControllers();
 

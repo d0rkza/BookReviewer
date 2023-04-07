@@ -7,11 +7,12 @@ using BookReviewer.Business.Books.Queries.GetBooksQuery;
 using BookReviewer.IBusiness;
 using BookReviewer.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace BookReviewer.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("{culture:culture}/[controller]/[action]")]
     public class AuthorController : MediatrController
     {
         /// <summary>

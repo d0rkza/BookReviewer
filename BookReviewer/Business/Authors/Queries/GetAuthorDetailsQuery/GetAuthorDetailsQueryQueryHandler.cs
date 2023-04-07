@@ -1,25 +1,28 @@
-﻿using BookReviewer.Models;
+﻿using BookReviewer.Localize;
 using BookReviewer.Models;
 using BookReviewer.Models.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BookReviewer.Business.Authors.Queries.GetAuthorDetailsQuery
 {
     public class GetAuthorDetailsQueryQueryHandler : IRequestHandler<GetAuthorDetailsQuery, GetAuthorDetailsQueryDTO>
     {
         private readonly BookReviewerDbContext context;
+        private readonly IStringLocalizer<Resource> localizer;
 
-        public GetAuthorDetailsQueryQueryHandler(BookReviewerDbContext context)
+        public GetAuthorDetailsQueryQueryHandler(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         public async Task<GetAuthorDetailsQueryDTO> Handle(GetAuthorDetailsQuery request, CancellationToken cancellationToken)
         {
             var author = await this.context.Author.FirstOrDefaultAsync(x => x.Id == request.AuthorId);
 
-            if (author == null) throw new BaseException("Author not found");
+            if (author == null) throw new BaseException(localizer["GET_AUTHOR_AUTHOR_NOT_FOUND"]);
 
             var booksByAuthor = from book in this.context.Book
                                 join bookAuthor in this.context.BookAuthor

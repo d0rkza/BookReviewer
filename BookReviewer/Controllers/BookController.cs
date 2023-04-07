@@ -12,7 +12,7 @@ using System.Net.Http.Headers;
 namespace BookReviewer.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("{culture:culture}/[controller]/[action]")]
     public class BookController : MediatrController
     {
         /// <summary>

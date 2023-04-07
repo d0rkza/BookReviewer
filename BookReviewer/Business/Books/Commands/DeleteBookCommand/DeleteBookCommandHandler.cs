@@ -1,28 +1,28 @@
 ﻿using BookReviewer.IBusiness;
+using BookReviewer.Localize;
 using BookReviewer.Models;
 using BookReviewer.Models.Exceptions;
 using BookReviewer.Models.Request;
 using BookReviewer.Models.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BookReviewer.Business.Books.Commands.DeleteBookCommand
 {
     public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand, RecordIDResponse>
     {
         private readonly BookReviewerDbContext context;
-        private readonly IBookReviewerService service;
+        private readonly IStringLocalizer<Resource> localizer;
 
-
-        public DeleteBookCommandHandler(BookReviewerDbContext context, IBookReviewerService service)
+        public DeleteBookCommandHandler(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
-            this.service = service;
+            this.localizer = localizer;
         }
 
         public async Task<RecordIDResponse> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
-            //this.service.CheckUserPermissions(request.ESign.Username);
             return await this.DeleteBook(request.Data, cancellationToken);
         }
 
@@ -34,7 +34,7 @@ namespace BookReviewer.Business.Books.Commands.DeleteBookCommand
 
             if (book == null)
             {
-                throw new BaseException("Requested book cannot be found!");
+                throw new BaseException(localizer["DELETE_BOOK_BOOK_NOT_FOUND"]);
             }
 
             this.context.Remove(book);

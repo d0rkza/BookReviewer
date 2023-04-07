@@ -1,17 +1,21 @@
 ﻿using BookReviewer.IBusiness;
+using BookReviewer.Localize;
 using BookReviewer.Models;
 using BookReviewer.Models.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BookReviewer.Business.BookReviewerService
 {
     public partial class BookReviewerService : IBookReviewerService
     {
         private readonly BookReviewerDbContext context;
+        private readonly IStringLocalizer<Resource> localizer;
 
-        public BookReviewerService(BookReviewerDbContext context)
+        public BookReviewerService(BookReviewerDbContext context, IStringLocalizer<Resource> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         public async void CheckUserPermissions(string username)
@@ -20,13 +24,8 @@ namespace BookReviewer.Business.BookReviewerService
 
             if (user == null)
             {
-                throw new BaseException("User does not exists!");
+                throw new BaseException(localizer["BOOK_REVIEWER_SERVICE_USER_NOT_FOUND"]);
             }
-
-            //if (user.Role != 1 || user.Role != 2)
-            //{
-            //    throw new BaseException("You do not have permission to do that!");
-            //}
         }
     }
 }
