@@ -91,9 +91,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: allowedOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("https://localhost:44488",
-                                              "https://localhost",
-                                              "http://localhost:4200")
+                          policy
+                          //.WithOrigins("https://localhost:44488",
+                          //             "https://localhost:",
+                          //             "http://localhost:4200",
+                          //             "https://localhost:4200",
+                          //             "localhost:4200")
+                          .AllowAnyOrigin()
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                       });
@@ -175,6 +179,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseCors(allowedOrigins);
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -186,6 +192,5 @@ app.UseEndpoints(endpoints =>
 
 app.MapControllers();
 
-app.UseCors(allowedOrigins);
 
 app.Run();

@@ -12,7 +12,7 @@ using System.Globalization;
 namespace BookReviewer.Api.Controllers
 {
     [ApiController]
-    [Route("{culture:culture}/[controller]/[action]")]
+    [Route("{culture:culture}/[controller]")]
     public class AuthorController : MediatrController
     {
         /// <summary>

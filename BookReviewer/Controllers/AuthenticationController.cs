@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Cors;
 
 namespace BookReviewer.Controllers
 {
@@ -17,9 +18,8 @@ namespace BookReviewer.Controllers
         string token_type = "Bearer";
         public string expires_in = string.Empty;
     }
-
     [ApiController]
-    [Route("[controller]")]
+    [Route("{culture:culture}/[controller]")]
     public class AuthenticationController : ControllerBase
     {
         private IUserService _userService;
